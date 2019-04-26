@@ -9,16 +9,20 @@ public class SubstringCalculatorImpl implements SubstringCalculator{
     public String getSubstringContainingNoMoreThanTwoDifferentCharacters(String input) {
         if (input == null) throw new IllegalArgumentException("Input is null.");
         if (input.length() <= 2) return input;
+
         Set<Character> chars = new HashSet<>();
         String maxLengthSubstr = "";
         StringBuilder curStr = new StringBuilder();
+        int suffixCounter = 0;
+
         for(int i = 0; i < input.length() ; i++){
             Character curChar = input.charAt(i);
             chars.add(curChar);
             if (chars.size() > 2){
                 if (curStr.length() > maxLengthSubstr.length())
                     maxLengthSubstr = curStr.toString();
-                String suffix = getOneCharSuffix(curStr.toString());
+                String suffix = getOneCharSuffix(curStr.toString(), suffixCounter);
+                suffixCounter = 1;
                 curStr.setLength(0);
                 curStr.append(suffix).append(curChar);
                 chars.clear();
@@ -27,24 +31,18 @@ public class SubstringCalculatorImpl implements SubstringCalculator{
             }
             else{
                 curStr.append(curChar);
+                if (curStr.length() >= 2 && (curStr.charAt(curStr.length() - 1) == curStr.charAt(curStr.length() - 2)))
+                    suffixCounter++;
+                else
+                    suffixCounter = 1;
             }
         }
         return curStr.length() > maxLengthSubstr.length() ? curStr.toString() : maxLengthSubstr;
     }
 
-    private String getOneCharSuffix(String input){
-        if (input == null || input.length() == 0) return "";
-        Character lastChar = input.charAt(input.length() - 1);
-        StringBuilder res = new StringBuilder().append(lastChar);
-        boolean changeSymbolFlag = true;
-        for(int i = input.length() - 2 ; i >= 0 && changeSymbolFlag ; i--){
-            Character curChar = input.charAt(i);
-            if (curChar.equals(lastChar))
-                res.append(curChar);
-            else
-                changeSymbolFlag = false;
-        }
-        return  res.toString();
-
+    private String getOneCharSuffix(String input, int suffixCounter) {
+        return input.substring(input.length() - suffixCounter);
     }
+
+
 }

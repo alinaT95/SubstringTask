@@ -102,4 +102,20 @@ public class SubstringTest {
         String expected = "aaaaaaaaaaaaaaaaaabbb";
         assertEquals(expected, res);
     }
+
+    @Test
+    public void test13() {
+        String input = "abcdefg";
+        String res = calculator.getSubstringContainingNoMoreThanTwoDifferentCharacters(input);
+        String expected = "ab";
+        assertEquals(expected, res);
+    }
+
+    @Test
+    public void test14() {
+        String input = "aaaaa";
+        String res = calculator.getSubstringContainingNoMoreThanTwoDifferentCharacters(input);
+        String expected = "aaaaa";
+        assertEquals(expected, res);
+    }
 }
